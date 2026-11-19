@@ -1,0 +1,26 @@
+name: oxylabs-web-api
+version: 0.1.0
+requires_hermes: ">=0.23.1"
+description: "Oxylabs Web API search and page extraction for Hermes Agent: Google results with page outlines, any page as Markdown, including JavaScript-heavy and bot-protected pages."
+author: Oxylabs
+license: MIT
+homepage: https://github.com/oxylabs/hermes-oxylabs-web-api
+kind: backend
+provides_web_providers:
+  - oxylabs
+requires_env:
+  - name: OXYLABS_WEB_API_KEY
+    description: "Oxylabs Web API key"
+    url: "https://dashboard.oxylabs.io/"
+    secret: true
+config_schema:
+  location:
+    type: str
+    default: ""
+    label: "Search country"
+    description: "Two-letter country code (for example US or DE) to see search results as users in that country do. Empty means no targeting."
+  render_js:
+    type: bool
+    default: false
+    label: "Render JavaScript"
+    description: "Load pages in a browser before extracting them. Slower and uses more credits; turn it on if pages come back nearly empty."
