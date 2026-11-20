@@ -67,8 +67,11 @@ jobs:
         env:
           OXYLABS_WEB_API_KEY: ${{ secrets.OXYLABS_WEB_API_KEY }}
         run: |
-          launcher="$(readlink -f "$(command -v hermes)")"
-          python="$(head -n 1 "$launcher" | sed 's/^#!//')"
-          echo "Hermes Python: $python"
+          # The hermes launcher is a shell script; find the interpreter of Hermes's own environment.
           cd "$HOME/.hermes/hermes-agent"
+          for candidate in $(find "$HOME/.hermes" -maxdepth 5 -path '*/bin/python' 2>/dev/null); do
+            if "$candidate" -c "import tools.web_tools" 2>/dev/null; then python="$candidate"; break; fi
+          done
+          if [ -z "${python:-}" ]; then echo "Hermes Python not found" >&2; cat "$(command -v hermes)" >&2; exit 1; fi
+          echo "Hermes Python: $python"
           "$python" "$GITHUB_WORKSPACE/scripts/hermes_smoke.py"
