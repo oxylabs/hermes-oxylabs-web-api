@@ -102,6 +102,8 @@ OXYLABS_WEB_API_KEY=... uv run pytest -m live       # calls the real API
 hermes plugins validate .                           # the checks the Hermes catalog runs
 ```
 
+The `Hermes end-to-end` workflow installs the latest stable Hermes, runs the catalog checks, installs the plugin from this repository (or by its catalog name, when started by hand with `source: catalog`) and calls `web_search` and `web_extract` against the live API.
+
 Releases: bump the version in `pyproject.toml`, both `plugin.yaml` files and `src/hermes_oxylabs_web_api/__init__.py`, add a `CHANGELOG.md` entry, then push a `v<version>` tag. The `Publish` workflow publishes to PyPI with trusted publishing.
 
 ## License

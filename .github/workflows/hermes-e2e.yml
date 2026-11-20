@@ -1,0 +1,74 @@
+name: Hermes end-to-end
+
+# Installs a real Hermes Agent with its official installer, installs this plugin into it,
+# and calls Hermes's web_search / web_extract tools against the live Oxylabs Web API.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "Install the plugin from this repository at the run's commit, or by its Hermes catalog name"
+        type: choice
+        options:
+          - repository
+          - catalog
+        default: repository
+
+concurrency:
+  group: hermes-e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    # The live calls need the repository secret, which forks don't get.
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PLUGIN_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      SOURCE: ${{ inputs.source || 'repository' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install Hermes Agent (latest stable release)
+        run: |
+          curl -fsSL https://hermes-agent.nousresearch.com/install.sh \
+            | bash -s -- --non-interactive --skip-browser --skip-computer-use
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - run: hermes --version
+
+      - name: Run the catalog admission checks on this commit
+        run: hermes plugins validate . --install-deps
+
+      - name: Install the plugin from this repository
+        if: ${{ env.SOURCE == 'repository' }}
+        run: hermes plugins install "https://github.com/${{ github.repository }}" --ref "$PLUGIN_SHA" --yes-deps --enable < /dev/null
+
+      - name: Install the plugin by its catalog name
+        if: ${{ env.SOURCE == 'catalog' }}
+        run: hermes plugins install oxylabs-web-api --yes-deps --enable < /dev/null
+
+      - name: Select Oxylabs for web search and extract
+        run: |
+          hermes plugins list | grep oxylabs-web-api
+          hermes config set web.search_backend oxylabs
+          hermes config set web.extract_backend oxylabs
+          hermes config set plugins.entries.oxylabs-web-api.settings.location DE
+
+      - name: Call web_search and web_extract through Hermes
+        env:
+          OXYLABS_WEB_API_KEY: ${{ secrets.OXYLABS_WEB_API_KEY }}
+        run: |
+          launcher="$(readlink -f "$(command -v hermes)")"
+          python="$(head -n 1 "$launcher" | sed 's/^#!//')"
+          echo "Hermes Python: $python"
+          cd "$HOME/.hermes/hermes-agent"
+          "$python" "$GITHUB_WORKSPACE/scripts/hermes_smoke.py"
