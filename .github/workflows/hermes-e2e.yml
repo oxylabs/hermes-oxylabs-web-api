@@ -69,9 +69,13 @@ jobs:
         run: |
           # The hermes launcher is a shell script; find the interpreter of Hermes's own environment.
           cd "$HOME/.hermes/hermes-agent"
-          for candidate in $(find "$HOME/.hermes" -maxdepth 5 -path '*/bin/python' 2>/dev/null); do
+          for candidate in $(find "$HOME/.hermes" -maxdepth 9 \( -path '*/bin/python' -o -path '*/bin/python3' \) 2>/dev/null); do
             if "$candidate" -c "import tools.web_tools" 2>/dev/null; then python="$candidate"; break; fi
           done
-          if [ -z "${python:-}" ]; then echo "Hermes Python not found" >&2; cat "$(command -v hermes)" >&2; exit 1; fi
+          if [ -z "${python:-}" ]; then
+            echo "Hermes Python not found" >&2
+            head -n 20 "$HOME/.hermes/hermes-agent/.hermes/bin/hermes" >&2
+            exit 1
+          fi
           echo "Hermes Python: $python"
           "$python" "$GITHUB_WORKSPACE/scripts/hermes_smoke.py"
