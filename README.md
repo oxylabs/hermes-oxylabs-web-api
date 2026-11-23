@@ -17,10 +17,12 @@ The agent keeps using the tools Hermes already has; you choose Oxylabs as the ba
 1. Install and enable the plugin:
 
    ```bash
-   hermes plugins install oxylabs/hermes-oxylabs-web-api --enable
+   hermes plugins install oxylabs-web-api --enable
    ```
 
-   Hermes warns that the plugin is not from its reviewed catalog, and asks before installing its one dependency (`httpx`, which Hermes already uses). In scripts, add `--yes-deps`.
+   The plugin is in the Hermes plugin catalog, so Hermes installs the reviewed version. It asks before installing the plugin's one dependency (`httpx`, which Hermes already uses). In scripts, add `--yes-deps`.
+
+   To install the latest commit instead, run `hermes plugins install oxylabs/hermes-oxylabs-web-api --enable`. Hermes warns that this source is not from its reviewed catalog.
 
 2. Add your key. The install asks for it; paste it there, or skip and add it later. To add it later, run `hermes tools`, open **Web Search & Extract**, select **Oxylabs Web API** and paste the key. Or add it to your profile's `.env` file (`~/.hermes/.env` for the default profile):
 

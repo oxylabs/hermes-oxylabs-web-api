@@ -1,5 +1,5 @@
 name: oxylabs-web-api
-version: 0.1.0
+version: 0.1.1
 requires_hermes: ">=0.23.1"
 description: "Oxylabs Web API search and page extraction for Hermes Agent: Google results with page outlines, any page as Markdown, including JavaScript-heavy and bot-protected pages."
 author: Oxylabs

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hermes-oxylabs-web-api"
-version = "0.1.0"
+version = "0.1.1"
 description = "Oxylabs Web API search and page extraction provider for Hermes Agent"
 readme = "README.md"
 requires-python = ">=3.11,<3.16"
