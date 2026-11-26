@@ -1,6 +1,6 @@
 # Oxylabs Web API for Hermes Agent
 
-[![Web API](https://github.com/oxylabs/hermes-oxylabs-web-api/blob/main/Web%20API%20for%20Hermes%20Agent.png)](https://oxylabs.io/products/web-api?utm_source=github&utm_medium=referral&utm_content=web_api_waitinglist&groupid=877)
+[![Web API](https://github.com/oxylabs/hermes-oxylabs-web-api/blob/main/Web%20API%20for%20Hermes%20Agent.png)](https://oxylabs.io/products/web-api?utm_source=github&utm_medium=referral&utm_content=hermes-oxylabs-web-api&utm_campaign=banner&groupid=877)
 
 <p align="left">
   <a href="https://dashboard.oxylabs.io"><img src="https://img.shields.io/badge/%F0%9F%9A%80_Get_Started-FF6B35?style=for-the-badge" alt="Get started"></a>
@@ -11,7 +11,7 @@
 </p>
 
 
-A [Hermes Agent](https://hermes-agent.nousresearch.com/) plugin that adds the [Oxylabs Web API](https://oxylabs.io/products/web-api) as a provider for Hermes's built-in `web_search` and `web_extract` tools.
+A [Hermes Agent](https://hermes-agent.nousresearch.com/) plugin that adds the [Oxylabs Web API](https://oxylabs.io/products/web-api?utm_source=github&utm_medium=referral&utm_content=hermes-oxylabs-web-api&groupid=877) as a provider for Hermes's built-in `web_search` and `web_extract` tools.
 
 - **web_search**: Google results with titles, URLs and a short outline of each page. Set a country to see results as users in that country do.
 - **web_extract**: any page as Markdown, including JavaScript-heavy pages (turn on JavaScript rendering) and pages that block plain HTTP clients.
